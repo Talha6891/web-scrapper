@@ -1,5 +1,7 @@
 # Web Scrapper
 
+![Sample Image](public/images/sample-image.png)
+
 This repository contains a Node.js script that uses Puppeteer and Axios to scrape images from a specified webpage and save them locally. The script fetches all images found in `<img>` tags on the page and stores them in a local directory.
 
 ## Features
@@ -68,4 +70,3 @@ This project is licensed under the [MIT License](LICENSE).
 ## Contact
 
 For questions or issues, please open an issue on the [GitHub repository](https://github.com/Talha6891/web-scrapper/issues).
-
