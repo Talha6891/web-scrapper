@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Scrapper - <%= title %></title>
+    <link href="/icons/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+    <!-- header -->
+    <%- include('partials/header') %> 
+    
+    <main>
+        <!-- search section -->
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title text-center">Image Scraper</h5>
+                            <form action="/scrape" method="POST" class="d-flex flex-column flex-lg-row gap-3">
+                                <input type="text" class="form-control flex-grow-1" name="url" id="urlInput" placeholder="Enter website URL to scrape images" required>
+                                <button type="submit" class="btn btn-primary">Scrape</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Success/Error Messages Section -->
+            <% if (success) { %>
+                <div class="alert alert-success mt-4"><%= success %></div>
+            <% } else if (error) { %>
+                <div class="alert alert-danger mt-4"><%= error %></div>
+            <% } %>
+        </div>
+    </main>
+
+    <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

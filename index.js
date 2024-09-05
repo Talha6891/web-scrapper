@@ -1,63 +1,32 @@
-import puppeteer from 'puppeteer';
-import axios from 'axios';
-import fs from 'fs';
+import express from 'express';
 import path from 'path';
-import { fileURLToPath } from 'url';
+import expressLayouts from 'express-ejs-layouts';
+import bodyParser from 'body-parser';
+import scrapeImages  from './src/controllers/ScrapperController.js'; 
 
-// Define the URL to scrape
-const url = 'https://www.freepik.com/free-photos-vectors/pakistani-food';
+const app = express();
 
-// Get the directory name of the current module
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const imagesDir = path.resolve(__dirname, 'images');
+app.use(bodyParser.urlencoded({ extended: true })); 
+app.use(express.static("public"));
+app.use('/bootstrap', express.static(path.join('node_modules', 'bootstrap', 'dist')));
+app.use('/icons', express.static(path.join('node_modules/bootstrap-icons/font')));
 
-// Ensure the images directory exists
-if (!fs.existsSync(imagesDir)) {
-  fs.mkdirSync(imagesDir);
-}
+app.set("view engine", "ejs");
+app.set("views", path.join("src", "views"));
 
-(async () => {
-  // Launch the browser
-  const browser = await puppeteer.launch();
-  
-  // Open a new page
-  const page = await browser.newPage();
-  
-  // Set a User-Agent
-  await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36');
-  
-  // Go to the URL
-  await page.goto(url, { waitUntil: 'load' });
+app.use(expressLayouts);
+app.set("layout", "index");
 
-  // Extract image URLs
-  const imageUrls = await page.evaluate(() => {
-    return Array.from(document.querySelectorAll('img')).map(img => img.src);
-  });
+// Home Route
+// Home Route
+app.get('/', (req, res) => {
+  res.render('index', { title: 'Home', success: null, error: null });
+});
 
-  // Function to download an image
-  const downloadImage = async (url, filename) => {
-    const response = await axios({
-      url,
-      responseType: 'arraybuffer'
-    });
-    fs.writeFileSync(filename, response.data);
-  };
+// Scraping Route
+app.post('/scrape', scrapeImages);
 
-  // Download each image
-  for (const imageUrl of imageUrls) {
-    // Extract image name from URL
-    const imageName = path.basename(new URL(imageUrl).pathname);
-    const imagePath = path.resolve(imagesDir, imageName);
-    
-    try {
-      await downloadImage(imageUrl, imagePath);
-      console.log(`Downloaded: ${imageUrl}`);
-    } catch (error) {
-      console.error(`Failed to download ${imageUrl}:`, error.message);
-    }
-  }
-
-  // Close the browser
-  await browser.close();
-})();
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+});
