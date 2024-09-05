@@ -1,0 +1,45 @@
+# Node modules (for Node.js projects)
+node_modules/
+
+# Python bytecode
+*.pyc
+__pycache__/
+
+# Logs
+*.log
+
+# Environment variables
+.env
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# IDE specific files
+.vscode/
+.idea/
+
+# Build directories
+dist/
+build/
+
+# Dependency directories
+bower_components/
+vendor/
+
+# Coverage reports
+coverage/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Temporary files
+*.tmp
+*.swp
+*.swo
+
+# macOS Finder files
+*.DS_Store
+
+# Windows filesystem files
+Desktop.ini
